@@ -4,10 +4,10 @@ import cv2
 import math
 import binascii
 from textwrap import wrap
-
+import os.path
 
 # img = Image.open("giphy.gif")
-
+#
 img = open("giphy.gif", 'r')
 
 with open("giphy.gif", 'rb+') as f:
@@ -15,4 +15,4 @@ with open("giphy.gif", 'rb+') as f:
     print(string)
     p = binascii.b2a_hex(string)
     q = str(int(p))
-    print(wrap(q,2))
+    print(wrap(q, 2))
