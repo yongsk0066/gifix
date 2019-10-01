@@ -36,6 +36,9 @@ def h2b_bin(hex):
         return binData
 
 
+'''
+main operator
+'''
 with open("giphy.gif", 'rb+') as f:
     string = f.read(20)
     # print(string)
