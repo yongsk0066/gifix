@@ -152,8 +152,24 @@ def application_extension(q, d):
 
     return dt
 
+def graphic_control_extension(q, d):
+    dt = {}
+    dt['Introducer'] = 21
+    dt['Label'] = 'f9'
+    dt['Block_size'] = 4
+    dt['Bit_field'] = h2b_bin(q[6:8])
+    dt['Delay_time'] = int('0x' + q[8:12], 16)
+    dt['TCI'] = q[12:14]
+    dt['Terminator'] = q[14:16]
+    dt['last_digit'] = d + 16
 
+    return dt
+
+a_d = application_extension(q[l_d:l_d + 38], l_d)
 print(h_d)
-print(application_extension(q[l_d:l_d + 38], l_d))
-print(wrap(q[1600:1616], 2))
+print(a_d)
+l_d = a_d['last_digit']
+g_d = graphic_control_extension(q[l_d:l_d + 16], l_d)
+print(g_d)
+# print(wrap(q[1600:1616], 2))
 print(wrap(q[1616:1680], 2))
