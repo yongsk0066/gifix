@@ -1,10 +1,20 @@
 import binascii
 from textwrap import wrap
 import os
+import json
 
 # img = Image.open("giphy.gif")
 # img = open("giphy.gif", 'r')
 
+with open('test.txt', 'rb+') as f:
+    length1 = os.path.getsize('test.lzw')
+
+    # read file with size of length
+    stringq = f.read(length1)
+
+    # convert binary to hex
+    pq = binascii.b2a_hex(stringq)
+    # print(pq)
 
 '''
 Convert 2 bytes of hex data To U16
@@ -152,6 +162,7 @@ def application_extension(q, d):
 
     return dt
 
+
 def graphic_control_extension(q, d):
     dt = {}
     dt['Introducer'] = 21
@@ -165,11 +176,68 @@ def graphic_control_extension(q, d):
 
     return dt
 
+
+def image_block(q, d):
+    dt = {}
+    dt['Separator'] = '2c'
+    dt['Left_position'] = h2h_int(q[2:6])
+    dt['Right_position'] = h2h_int(q[6:10])
+    dt['Width'] = h2h_int(q[10:14])
+    dt['Height'] = h2h_int(q[14:18])
+    dt['flag'] = q[18:24]
+    a = 24 + 510
+    dt['o1'] = q[a:a + 2]
+    a += 512
+    dt['o2'] = q[a:a + 2]
+    a += 512
+    dt['o3'] = q[a:a + 2]
+    a += 512
+    dt['o4'] = q[a:a + 2]
+    # a += 512
+    # dt['o5'] = q[a:a + 2]
+    # a += 512
+    # dt['o6'] = q[a:a + 2]
+    # a += 512
+    # dt['o7'] = q[a:a + 2]
+    # a += 512
+    # dt['o8'] = q[a:a + 2]
+    # a += 512
+    # dt['o9'] = q[a:a + 2]
+    # a += 512
+    # dt['o10'] = q[a:a + 2]
+    # a += 512
+    # dt['o11'] = q[a:a + 2]
+    # a += 512
+    # dt['o12'] = q[a:a + 2]
+    # a += 512
+    # dt['o13'] = q[a:a + 2]
+    # a += 512
+    # dt['o14'] = q[a:a + 2]
+    # a += 512
+    # dt['o15'] = q[a:a + 2]
+
+    return dt
+
+
 a_d = application_extension(q[l_d:l_d + 38], l_d)
-print(h_d)
-print(a_d)
+print(json.dumps(h_d))
+print(json.dumps(a_d))
 l_d = a_d['last_digit']
 g_d = graphic_control_extension(q[l_d:l_d + 16], l_d)
-print(g_d)
-# print(wrap(q[1600:1616], 2))
-print(wrap(q[1616:1680], 2))
+print(json.dumps(g_d))
+l_d = g_d['last_digit']
+# print(l_d + 534)
+i_d = image_block(q[1616:700000], l_d)
+print(type(json.dumps(i_d)))
+# b = wrap(q[1638:200256],2)
+# print(" ".join(wrap(q[2150:2662], 2)))
+
+# i = 0
+# c = 0
+# while True:
+#     j = int('0x'+b[i],16) + 1
+#     i += j
+#     c += 1
+#     print(c, i,b[i])
+
+# print(wrap(q[109070 -100:109070 + 10],2))
